@@ -1,0 +1,111 @@
+Step 1: Start the gNB
+Navigate to the Build Directory:
+
+sh
+Copy code
+cd ~/UERANSIM/build
+Start the gNB:
+
+sh
+Copy code
+
+./nr-gnb -c ../config/open5gs-gnb.yaml &
+Step 2: Start the UE
+Navigate to the Build Directory: If you are not already in the build directory:
+
+sh
+Copy code
+cd ~/UERANSIM/build
+Start the UE:
+
+sh
+Copy code
+
+./nr-ue -c ../config/open5gs-ue.yaml &
+Step 3: Monitor Logs
+To ensure that both gNB and UE are running correctly, you should monitor their logs.
+Monitor gNB Logs:
+
+sh
+Copy code
+tail -f gnb.log
+Monitor UE Logs:
+
+sh
+Copy code
+tail -f ue.log
+
+
+
+
+
+
+
+
+sudo systemctl stop open5gs
+
+sudo systemctl start open5gs && sleep 10 && sudo systemctl stop open5gs
+
+---------------------------------------------------------------------------------
+
+USE IN OWN PC
+
+Step 1: Download the Release Tarball to Your Home Directory
+
+bash
+
+cd ~
+wget https://www.nsnam.org/releases/ns-allinone-3.42.tar.bz2
+
+Step 2: Extract the Tarball
+
+bash
+
+tar xfj ns-allinone-3.42.tar.bz2
+
+Step 3: Navigate to the Extracted Directory
+
+bash
+
+cd ns-allinone-3.42/ns-3.42
+
+Step 4: Configure the Build
+
+bash
+
+ s/ns3 configure --enable-examples --enable-tets
+
+Step 5: Build the Module
+
+bash
+
+./ns3 build
+
+Step 6: Run Unit Tests to Verify the Installation
+
+bash
+
+./test.py
+
+Here are all the commands together for quick reference:
+
+bash
+
+# Download the release tarball to your home directory
+cd ~
+wget https://www.nsnam.org/releases/ns-allinone-3.42.tar.bz2
+
+# Extract the tarball
+tar xfj ns-allinone-3.42.tar.bz2
+
+# Navigate to the extracted directory
+cd ns-allinone-3.42/ns-3.42
+
+# Configure the build
+./ns3 configure --enable-examples --enable-tests
+
+# Build the module
+./ns3 build
+
+# Run unit tests to verify the installation
+./test.py

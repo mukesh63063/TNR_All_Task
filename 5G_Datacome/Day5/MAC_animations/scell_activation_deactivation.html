@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCell Activation/Deactivation MAC CE Visualization (3GPP 138.321)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .mac-ce-container {
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .mac-ce-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #2980b9;
+        }
+        .bit-container {
+            display: flex;
+            flex-direction: row;
+            margin: 10px 0;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .bit {
+            text-align: center;
+            padding: 10px 0;
+            border-right: 1px solid #bdc3c7;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+        .bit:last-child {
+            border-right: none;
+        }
+        .bit-label {
+            font-size: 0.8em;
+            position: absolute;
+            top: 2px;
+            left: 0;
+            right: 0;
+            color: #7f8c8d;
+        }
+        .bit-value {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .c7 { flex: 1; } /* Bits for each SCell index */
+        .c6 { flex: 1; }
+        .c5 { flex: 1; }
+        .c4 { flex: 1; }
+        .c3 { flex: 1; }
+        .c2 { flex: 1; }
+        .c1 { flex: 1; }
+        .c0 { flex: 1; }
+        .r { flex: 1; } /* Reserved bit */
+        
+        .active {
+            background-color: #27ae60;
+            color: white;
+        }
+        .inactive {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .reserved {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .explanation {
+            margin-top: 40px;
+            background-color: #eef7fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 1em;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .format-description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .note {
+            font-style: italic;
+            color: #7f8c8d;
+            margin: 10px 0;
+        }
+        
+        .specification-reference {
+            text-align: right;
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        
+        @keyframes highlight {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: #f1c40f; }
+            100% { transform: scale(1); }
+        }
+        
+        .highlight {
+            animation: highlight 1s;
+        }
+        
+        .example-usage {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .animated-transmission {
+            height: 5px;
+            background-color: #3498db;
+            width: 0%;
+            margin: 20px 0;
+            transition: width 2s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <h1>SCell Activation/Deactivation MAC CE Visualization</h1>
+    <p class="format-description">
+        The Activation/Deactivation MAC CE is identified by a MAC PDU subheader with LCID as specified in Table 6.2.1-1 for Short-Range, Table 6.2.1-2 for Long-Range in 3GPP TS 38.321. 
+        It has a fixed size and consists of a single octet containing seven C-fields and one R-field.
+    </p>
+    
+    <div class="controls">
+        <button id="toggleC0">Toggle Cell 0</button>
+        <button id="toggleC1">Toggle Cell 1</button>
+        <button id="toggleC4">Toggle Cell 4</button>
+        <button id="randomToggle">Random Toggle</button>
+        <button id="resetCells">Reset All</button>
+        <button id="simulateTransmission">Simulate Transmission</button>
+    </div>
+    
+    <div class="animated-transmission" id="transmission"></div>
+    
+    <div class="mac-ce-container">
+        <div class="mac-ce-title">SCell Activation/Deactivation MAC CE Format (1 octet)</div>
+        <div class="bit-container" id="bit-container">
+            <div class="bit c7" id="c7">
+                <div class="bit-label">C7</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c6" id="c6">
+                <div class="bit-label">C6</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c5" id="c5">
+                <div class="bit-label">C5</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c4" id="c4">
+                <div class="bit-label">C4</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c3" id="c3">
+                <div class="bit-label">C3</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c2" id="c2">
+                <div class="bit-label">C2</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c1" id="c1">
+                <div class="bit-label">C1</div>
+                <div class="bit-value">0</div>
+            </div>
+            <div class="bit c0" id="c0">
+                <div class="bit-label">C0</div>
+                <div class="bit-value">0</div>
+            </div>
+        </div>
+        <p class="note">Note: The Bit C0 position relates to SCellIndex=0, C1 to SCellIndex=1, and so on.</p>
+    </div>
+    
+    <div class="explanation">
+        <h3>SCell Activation/Deactivation MAC CE Details</h3>
+        <p>The Activation/Deactivation MAC CE is used to control the activation and deactivation of Secondary Cells (SCells). The MAC control element consists of a single octet defined as follows:</p>
+        <ul>
+            <li><strong>C7-C1:</strong> If there is an SCell configured with SCellIndex i, the Ci field indicates the activation status of the SCell with SCellIndex i. Otherwise, the Ci field is reserved.</li>
+            <li><strong>Ci field interpretation:</strong>
+                <ul>
+                    <li>0: Deactivation of the SCell with SCellIndex i.</li>
+                    <li>1: Activation of the SCell with SCellIndex i.</li>
+                </ul>
+            </li>
+            <li><strong>C0:</strong> Reserved bit, set to 0.</li>
+        </ul>
+        <p>According to 3GPP TS 38.321, the UE processes the Activation/Deactivation MAC CE as follows:</p>
+        <ul>
+            <li>If activation status of an SCell has been changed, UE starts or restarts the sCellDeactivationTimer associated with the SCell.</li>
+            <li>If the UE receives an Activation/Deactivation MAC CE that activates an SCell, the UE should start reporting CSI for the SCell.</li>
+            <li>If the UE receives an Activation/Deactivation MAC CE that deactivates an SCell, the UE shall stop reporting CSI for the SCell.</li>
+        </ul>
+    </div>
+    
+    <div class="example-usage">
+        <h3>Example Usage</h3>
+        <p>An example Activation/Deactivation MAC CE would be <span id="current-octet">0x00</span> in hex format.</p>
+        <p>If C1, C3, and C6 bits are set to 1, this indicates that SCellIndex 1, 3, and 6 should be activated, while all other configured SCells remain or become deactivated.</p>
+        <div id="statusDisplay">
+            <p><strong>Current Cell Status:</strong></p>
+            <div id="cellStatus"></div>
+        </div>
+    </div>
+    
+    <div class="specification-reference">
+        Reference: 3GPP TS 38.321 version 15.3.0 Release 15
+    </div>
+    
+    <script>
+        // Get all the bit elements
+        const bits = {};
+        for(let i = 0; i <= 7; i++) {
+            const bitId = (i === 0) ? 'c0' : 'c' + (7-i+1);
+            bits[bitId] = document.getElementById(bitId);
+        }
+        
+        const cellStatus = document.getElementById('cellStatus');
+        const currentOctet = document.getElementById('current-octet');
+        const transmission = document.getElementById('transmission');
+        
+        // Initialize all cells as inactive
+        function resetCells() {
+            for(const bitId in bits) {
+                if(bitId === 'c0') {
+                    bits[bitId].classList.add('reserved');
+                    bits[bitId].querySelector('.bit-value').textContent = '0';
+                } else {
+                    bits[bitId].classList.remove('active');
+                    bits[bitId].classList.add('inactive');
+                    bits[bitId].querySelector('.bit-value').textContent = '0';
+                }
+            }
+            updateStatusDisplay();
+            updateOctetValue();
+        }
+        
+        // Toggle the state of a specific cell (except for c0 which is reserved)
+        function toggleCell(cellId) {
+            if(cellId === 'c0') return; // C0 is reserved
+            
+            const cell = bits[cellId];
+            const valueElement = cell.querySelector('.bit-value');
+            
+            if(cell.classList.contains('active')) {
+                cell.classList.remove('active');
+                cell.classList.add('inactive');
+                valueElement.textContent = '0';
+            } else {
+                cell.classList.remove('inactive');
+                cell.classList.add('active');
+                valueElement.textContent = '1';
+            }
+            
+            cell.classList.add('highlight');
+            setTimeout(() => {
+                cell.classList.remove('highlight');
+            }, 1000);
+            
+            updateStatusDisplay();
+            updateOctetValue();
+        }
+        
+        // Random toggle - randomly toggle some cells
+        function randomToggle() {
+            for(const bitId in bits) {
+                if(bitId !== 'c0' && Math.random() > 0.5) {
+                    toggleCell(bitId);
+                }
+            }
+        }
+        
+        // Update the status display with current cell states
+        function updateStatusDisplay() {
+            let statusHTML = '';
+            for(const bitId in bits) {
+                if(bitId === 'c0') continue; // Skip reserved bit
+                
+                const isActive = bits[bitId].classList.contains('active');
+                const cellIndex = bitId === 'c0' ? 0 : 7 - parseInt(bitId.substring(1)) + 1;
+                
+                statusHTML += `<p>Cell ${cellIndex}: ${isActive ? 'Activated' : 'Deactivated'}</p>`;
+            }
+            cellStatus.innerHTML = statusHTML;
+        }
+        
+        // Update the octet value display
+        function updateOctetValue() {
+            let value = 0;
+            for(let i = 7; i >= 0; i--) {
+                const bitId = (i === 0) ? 'c0' : 'c' + (7-i+1);
+                const bit = bits[bitId].querySelector('.bit-value').textContent;
+                value = (value << 1) | parseInt(bit);
+            }
+            currentOctet.textContent = '0x' + value.toString(16).padStart(2, '0').toUpperCase();
+        }
+        
+        // Simulate transmission animation
+        function simulateTransmission() {
+            transmission.style.width = '0%';
+            setTimeout(() => {
+                transmission.style.width = '100%';
+            }, 100);
+            
+            // After transmission, highlight all active cells
+            setTimeout(() => {
+                for(const bitId in bits) {
+                    if(bits[bitId].classList.contains('active')) {
+                        bits[bitId].classList.add('highlight');
+                        setTimeout(() => {
+                            bits[bitId].classList.remove('highlight');
+                        }, 1000);
+                    }
+                }
+            }, 2000);
+        }
+        
+        // Set up event listeners
+        document.getElementById('toggleC0').addEventListener('click', () => toggleCell('c0'));
+        document.getElementById('toggleC1').addEventListener('click', () => toggleCell('c1'));
+        document.getElementById('toggleC4').addEventListener('click', () => toggleCell('c4'));
+        document.getElementById('randomToggle').addEventListener('click', randomToggle);
+        document.getElementById('resetCells').addEventListener('click', resetCells);
+        document.getElementById('simulateTransmission').addEventListener('click', simulateTransmission);
+        
+        // Initialize
+        resetCells();
+        bits['c0'].classList.add('reserved');
+        updateStatusDisplay();
+    </script>
+</body>
+</html>

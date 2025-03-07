@@ -1,0 +1,40 @@
+<svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Header Fields -->
+  <rect x="50" y="50" width="40" height="40" fill="#FFB347" stroke="black"/>
+  <text x="70" y="75" text-anchor="middle" font-family="Arial" font-size="12">D/C</text>
+  
+  <rect x="90" y="50" width="40" height="40" fill="#FFB347" stroke="black"/>
+  <text x="110" y="75" text-anchor="middle" font-family="Arial" font-size="12">P</text>
+  
+  <rect x="130" y="50" width="40" height="40" fill="#FFB347" stroke="black"/>
+  <text x="150" y="75" text-anchor="middle" font-family="Arial" font-size="12">SI</text>
+  
+  <rect x="170" y="50" width="80" height="40" fill="#FFB347" stroke="black"/>
+  <text x="210" y="75" text-anchor="middle" font-family="Arial" font-size="12">SN</text>
+  
+  <rect x="250" y="50" width="80" height="40" fill="#FFB347" stroke="black"/>
+  <text x="290" y="75" text-anchor="middle" font-family="Arial" font-size="12">SO</text>
+  
+  <!-- Payload -->
+  <rect x="330" y="50" width="120" height="40" fill="#98FB98" stroke="black"/>
+  <text x="390" y="75" text-anchor="middle" font-family="Arial" font-size="12">Payload</text>
+  
+  <!-- Field Descriptions -->
+  <text x="70" y="120" text-anchor="middle" font-family="Arial" font-size="10">Data/</text>
+  <text x="70" y="132" text-anchor="middle" font-family="Arial" font-size="10">Control</text>
+  
+  <text x="110" y="120" text-anchor="middle" font-family="Arial" font-size="10">Poll</text>
+  <text x="110" y="132" text-anchor="middle" font-family="Arial" font-size="10">Bit</text>
+  
+  <text x="150" y="120" text-anchor="middle" font-family="Arial" font-size="10">Segment</text>
+  <text x="150" y="132" text-anchor="middle" font-family="Arial" font-size="10">Info</text>
+  
+  <text x="210" y="120" text-anchor="middle" font-family="Arial" font-size="10">Sequence</text>
+  <text x="210" y="132" text-anchor="middle" font-family="Arial" font-size="10">Number</text>
+  
+  <text x="290" y="120" text-anchor="middle" font-family="Arial" font-size="10">Segment</text>
+  <text x="290" y="132" text-anchor="middle" font-family="Arial" font-size="10">Offset</text>
+  
+  <text x="390" y="120" text-anchor="middle" font-family="Arial" font-size="10">Data</text>
+  <text x="390" y="132" text-anchor="middle" font-family="Arial" font-size="10">Payload</text>
+</svg>

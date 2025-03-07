@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .container {
+      width: 100%;
+      height: 400px;
+      background: #f5f5f5;
+      position: relative;
+      overflow: hidden;
+    }
+    .node {
+      width: 120px;
+      height: 80px;
+      background: #4a90e2;
+      border-radius: 8px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: Arial;
+    }
+    .packet {
+      width: 40px;
+      height: 25px;
+      background: #82ca9d;
+      position: absolute;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      transition: all 1s linear;
+    }
+    .nack {
+      background: #ff7f7f;
+    }
+    .retransmit {
+      background: #ffd700;
+    }
+    .status {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Arial;
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="animContainer">
+    <div class="status" id="status">Starting transmission...</div>
+    <div class="node" style="left: 50px; top: 160px">Transmitter</div>
+    <div class="node" style="right: 50px; top: 160px">Receiver</div>
+  </div>
+
+  <script>
+    const container = document.getElementById('animContainer');
+    const status = document.getElementById('status');
+    
+    function createPacket(id, text, isNack = false, isRetransmit = false) {
+      const packet = document.createElement('div');
+      packet.className = `packet ${isNack ? 'nack' : ''} ${isRetransmit ? 'retransmit' : ''}`;
+      packet.id = id;
+      packet.textContent = text;
+      packet.style.left = '180px';
+      packet.style.top = '185px';
+      return packet;
+    }
+
+    async function animate() {
+      // Initial delay
+      await new Promise(r => setTimeout(r, 1000));
+
+      // Send packets 1 and 2
+      for(let i = 1; i <= 2; i++) {
+        status.textContent = `Sending packet ${i}...`;
+        const packet = createPacket(`pkt${i}`, `${i}`);
+        container.appendChild(packet);
+        await new Promise(r => setTimeout(r, 100));
+        packet.style.left = '480px';
+        await new Promise(r => setTimeout(r, 1000));
+        container.removeChild(packet);
+      }
+
+      // Packet 3 gets lost
+      status.textContent = 'Packet 3 is lost in transmission...';
+      const lostPacket = createPacket('pkt3', '3');
+      container.appendChild(lostPacket);
+      await new Promise(r => setTimeout(r, 100));
+      lostPacket.style.left = '330px';
+      lostPacket.style.opacity = '0';
+      await new Promise(r => setTimeout(r, 1000));
+      container.removeChild(lostPacket);
+
+      // Send packet 4
+      status.textContent = 'Sending packet 4...';
+      const packet4 = createPacket('pkt4', '4');
+      container.appendChild(packet4);
+      await new Promise(r => setTimeout(r, 100));
+      packet4.style.left = '480px';
+      await new Promise(r => setTimeout(r, 1000));
+      container.removeChild(packet4);
+
+      // Receive NACK
+      status.textContent = 'Receiver detects missing packet 3, sending NACK...';
+      const nack = createPacket('nack', 'NACK', true);
+      container.appendChild(nack);
+      nack.style.left = '480px';
+      await new Promise(r => setTimeout(r, 100));
+      nack.style.left = '180px';
+      await new Promise(r => setTimeout(r, 1000));
+      container.removeChild(nack);
+
+      // Retransmit packet 3
+      status.textContent = 'Retransmitting packet 3...';
+      const retransmit = createPacket('retx3', '3', false, true);
+      container.appendChild(retransmit);
+      await new Promise(r => setTimeout(r, 100));
+      retransmit.style.left = '480px';
+      await new Promise(r => setTimeout(r, 1000));
+      container.removeChild(retransmit);
+
+      status.textContent = 'Transmission complete!';
+      
+      // Restart animation after delay
+      await new Promise(r => setTimeout(r, 2000));
+      animate();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f4f8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .protocol-box {
+            width: 120px;
+            height: 60px;
+            background: #fff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        .ue {
+            left: 50px;
+            top: 100px;
+            background: #e3f2fd;
+        }
+        .gnb {
+            right: 50px;
+            top: 100px;
+            background: #f3e5f5;
+        }
+        .message {
+            width: 20px;
+            height: 20px;
+            background: #4caf50;
+            border-radius: 50%;
+            position: absolute;
+            left: 180px;
+            top: 120px;
+            animation: sendMessage 2s infinite;
+        }
+        .drx-cycle {
+            width: 200px;
+            height: 40px;
+            background: #fff;
+            border: 2px solid #666;
+            position: absolute;
+            left: 50px;
+            top: 200px;
+            overflow: hidden;
+        }
+        .active-period {
+            width: 40px;
+            height: 100%;
+            background: #81c784;
+            animation: drxCycle 4s infinite;
+        }
+        @keyframes sendMessage {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(500px); opacity: 0; }
+        }
+        @keyframes drxCycle {
+            0% { transform: translateX(-40px); }
+            20% { transform: translateX(0); }
+            80% { transform: translateX(160px); }
+            100% { transform: translateX(200px); }
+        }
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        .legend {
+            position: absolute;
+            top: 280px;
+            left: 50px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">DRX Protocol Animation</h1>
+        
+        <div class="protocol-box ue">
+            User Equipment (UE)
+        </div>
+        
+        <div class="protocol-box gnb">
+            gNB (Base Station)
+        </div>
+        
+        <div class="message"></div>
+        
+        <div class="drx-cycle">
+            <div class="active-period"></div>
+        </div>
+        
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #81c784"></div>
+                <span>Active Period</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4caf50"></div>
+                <span>MAC CE Message</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e3f2fd"></div>
+                <span>UE</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f3e5f5"></div>
+                <span>gNB</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

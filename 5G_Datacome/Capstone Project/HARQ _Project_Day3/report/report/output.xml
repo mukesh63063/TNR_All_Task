@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.0 on win32)" generated="2025-02-27T14:09:55.985042" rpa="false" schemaversion="5">
+<suite id="s1" name="Harq Test" source="C:\Users\satya\PycharmProjects\HARQ_Automation\harq_test.robot">
+<test id="s1-t1" name="Run HARQ Simulation" line="6">
+<kw name="Execute HARQ Simulation">
+<kw name="Run" owner="OperatingSystem">
+<msg time="2025-02-27T14:09:56.026600" level="INFO">Running command 'python main.py 2&gt;&amp;1'.</msg>
+<arg>python main.py</arg>
+<doc>Runs the given command in the system and returns the output.</doc>
+<status status="PASS" start="2025-02-27T14:09:56.019063" elapsed="1.010853"/>
+</kw>
+<status status="PASS" start="2025-02-27T14:09:56.018292" elapsed="1.011775"/>
+</kw>
+<kw name="Check Output Files Exist">
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-02-27T14:09:57.030876" level="INFO" html="true">File '&lt;a href="file://C:\Users\satya\PycharmProjects\HARQ_Automation\output\harq_logs.txt"&gt;C:\Users\satya\PycharmProjects\HARQ_Automation\output\harq_logs.txt&lt;/a&gt;' exists.</msg>
+<arg>output/harq_logs.txt</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.030667" elapsed="0.000268"/>
+</kw>
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-02-27T14:09:57.031155" level="INFO" html="true">File '&lt;a href="file://C:\Users\satya\PycharmProjects\HARQ_Automation\output\harq_plot.png"&gt;C:\Users\satya\PycharmProjects\HARQ_Automation\output\harq_plot.png&lt;/a&gt;' exists.</msg>
+<arg>output/harq_plot.png</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.031022" elapsed="0.000170"/>
+</kw>
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-02-27T14:09:57.031362" level="INFO" html="true">File '&lt;a href="file://C:\Users\satya\PycharmProjects\HARQ_Automation\output\summary_report.txt"&gt;C:\Users\satya\PycharmProjects\HARQ_Automation\output\summary_report.txt&lt;/a&gt;' exists.</msg>
+<arg>output/summary_report.txt</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.031255" elapsed="0.000151"/>
+</kw>
+<status status="PASS" start="2025-02-27T14:09:57.030392" elapsed="0.001060"/>
+</kw>
+<doc>Runs the HARQ simulation and checks if outputs are generated</doc>
+<status status="PASS" start="2025-02-27T14:09:56.017642" elapsed="1.014022"/>
+</test>
+<test id="s1-t2" name="Validate HARQ Success Rate" line="11">
+<kw name="Get File" owner="OperatingSystem">
+<msg time="2025-02-27T14:09:57.032478" level="INFO" html="true">Getting file '&lt;a href="file://C:\Users\satya\PycharmProjects\HARQ_Automation\output\summary_report.txt"&gt;C:\Users\satya\PycharmProjects\HARQ_Automation\output\summary_report.txt&lt;/a&gt;'.</msg>
+<msg time="2025-02-27T14:09:57.040161" level="INFO">${report} = HARQ Performance Summary
+Success Rate: 46.00%
+Average Latency: 3.74 ms
+</msg>
+<var>${report}</var>
+<arg>output/summary_report.txt</arg>
+<doc>Returns the contents of a specified file.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.032398" elapsed="0.007811"/>
+</kw>
+<kw name="Get Line" owner="String">
+<msg time="2025-02-27T14:09:57.040685" level="INFO">${success_rate_line} = Success Rate: 46.00%</msg>
+<var>${success_rate_line}</var>
+<arg>${report}</arg>
+<arg>1</arg>
+<doc>Returns the specified line from the given ``string``.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.040480" elapsed="0.000230"/>
+</kw>
+<kw name="Fetch From Right" owner="String">
+<msg time="2025-02-27T14:09:57.041050" level="INFO">${success_rate} =  46.00%</msg>
+<var>${success_rate}</var>
+<arg>${success_rate_line}</arg>
+<arg>:</arg>
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.040886" elapsed="0.000187"/>
+</kw>
+<kw name="Remove String" owner="String">
+<msg time="2025-02-27T14:09:57.041347" level="INFO">${success_rate} =  46.00</msg>
+<var>${success_rate}</var>
+<arg>${success_rate}</arg>
+<arg>%</arg>
+<arg>ms</arg>
+<doc>Removes all ``removables`` from the given ``string``.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.041223" elapsed="0.000146"/>
+</kw>
+<kw name="Convert To Number" owner="BuiltIn">
+<msg time="2025-02-27T14:09:57.041653" level="INFO">${success_rate} = 46.0</msg>
+<var>${success_rate}</var>
+<arg>${success_rate}</arg>
+<doc>Converts the given item to a floating point number.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.041508" elapsed="0.000163"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${success_rate} &gt; 0</arg>
+<arg>Success rate should be greater than 0%</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.041807" elapsed="0.000190"/>
+</kw>
+<doc>Validates that the HARQ success rate is reasonable</doc>
+<status status="PASS" start="2025-02-27T14:09:57.032069" elapsed="0.010067"/>
+</test>
+<test id="s1-t3" name="Validate HARQ Latency" line="20">
+<kw name="Get File" owner="OperatingSystem">
+<msg time="2025-02-27T14:09:57.042893" level="INFO" html="true">Getting file '&lt;a href="file://C:\Users\satya\PycharmProjects\HARQ_Automation\output\summary_report.txt"&gt;C:\Users\satya\PycharmProjects\HARQ_Automation\output\summary_report.txt&lt;/a&gt;'.</msg>
+<msg time="2025-02-27T14:09:57.043146" level="INFO">${report} = HARQ Performance Summary
+Success Rate: 46.00%
+Average Latency: 3.74 ms
+</msg>
+<var>${report}</var>
+<arg>output/summary_report.txt</arg>
+<doc>Returns the contents of a specified file.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.042805" elapsed="0.000366"/>
+</kw>
+<kw name="Get Line" owner="String">
+<msg time="2025-02-27T14:09:57.043418" level="INFO">${latency_line} = Average Latency: 3.74 ms</msg>
+<var>${latency_line}</var>
+<arg>${report}</arg>
+<arg>2</arg>
+<doc>Returns the specified line from the given ``string``.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.043300" elapsed="0.000137"/>
+</kw>
+<kw name="Fetch From Right" owner="String">
+<msg time="2025-02-27T14:09:57.043669" level="INFO">${latency} =  3.74 ms</msg>
+<var>${latency}</var>
+<arg>${latency_line}</arg>
+<arg>:</arg>
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.043562" elapsed="0.000124"/>
+</kw>
+<kw name="Remove String" owner="String">
+<msg time="2025-02-27T14:09:57.043927" level="INFO">${latency} =  3.74 </msg>
+<var>${latency}</var>
+<arg>${latency}</arg>
+<arg>%</arg>
+<arg>ms</arg>
+<doc>Removes all ``removables`` from the given ``string``.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.043822" elapsed="0.000122"/>
+</kw>
+<kw name="Convert To Number" owner="BuiltIn">
+<msg time="2025-02-27T14:09:57.044191" level="INFO">${latency} = 3.74</msg>
+<var>${latency}</var>
+<arg>${latency}</arg>
+<doc>Converts the given item to a floating point number.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.044069" elapsed="0.000139"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${latency} &gt; 0</arg>
+<arg>Latency should be greater than 0 ms</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2025-02-27T14:09:57.044330" elapsed="0.000168"/>
+</kw>
+<doc>Validates that the average latency is reasonable</doc>
+<status status="PASS" start="2025-02-27T14:09:57.042479" elapsed="0.002144"/>
+</test>
+<status status="PASS" start="2025-02-27T14:09:55.986242" elapsed="1.058864"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Harq Test" id="s1" pass="3" fail="0" skip="0">Harq Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

@@ -1,0 +1,3 @@
+HARQ Performance Summary
+Success Rate: 46.00%
+Average Latency: 3.74 ms

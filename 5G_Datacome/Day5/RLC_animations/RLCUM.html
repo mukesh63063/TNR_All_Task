@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detailed UM Data Transfer Animation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .section {
+      border: 2px solid #007acc;
+      border-radius: 8px;
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 900px;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .box {
+      border: 1px solid #007acc;
+      border-radius: 8px;
+      padding: 15px;
+      background: #e6f2ff;
+      min-width: 200px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .arrow {
+      width: 0; 
+      height: 0; 
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 20px solid #007acc;
+      margin: 0 20px;
+    }
+    /* Animation keyframes */
+    @keyframes slideRight {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(300px); }
+    }
+    @keyframes slideLeft {
+      0% { transform: translateX(300px); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes reassembleColor {
+      0%   { background-color: #ffe6e6; }
+      50%  { background-color: #e6ffe6; }
+      100% { background-color: #e6f2ff; }
+    }
+    .animate-slide-right {
+      animation: slideRight 2s ease-in-out forwards;
+    }
+    .animate-slide-left {
+      animation: slideLeft 2s ease-in-out forwards;
+    }
+    .animate-reassemble {
+      animation: reassembleColor 3s ease-in-out forwards;
+    }
+    /* Style for the list of received PDUs */
+    .pdu-list {
+      list-style: none;
+      padding: 0;
+    }
+    .pdu-item {
+      background: #fff;
+      border: 1px solid #007acc;
+      border-radius: 4px;
+      padding: 5px;
+      margin: 5px;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+    .state {
+      font-weight: bold;
+      color: #007acc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Detailed UM Data Transfer Process</h1>
+
+  <!-- Transmit Operations Section -->
+  <section class="section" id="transmitSection">
+    <h2>Transmit Operations</h2>
+    <p><strong>TX_Next:</strong> <span class="state" id="txNextState">100</span></p>
+    <div class="container">
+      <div class="box" id="txPDU">
+        <p><strong>UMD PDU</strong></p>
+        <p>SN = <span id="txSN">100</span></p>
+        <p>Segment of RLC SDU</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="box" id="lowerLayerTx">
+        <p><strong>Lower Layer</strong></p>
+        <p>Waiting for PDU...</p>
+      </div>
+    </div>
+    <div class="controls">
+      <button onclick="startTransmit()">Start Transmit Animation</button>
+    </div>
+    <p id="transmitStatus"></p>
+  </section>
+
+  <!-- Receive Operations Section -->
+  <section class="section" id="receiveSection">
+    <h2>Receive Operations</h2>
+    <p><strong>RX_Next_Highest:</strong> <span class="state" id="rxNextState">105</span> &nbsp;&nbsp; <strong>UM_Window_Size:</strong> <span class="state" id="umWindow">5</span></p>
+    <div class="container">
+      <div class="box" id="lowerLayerRx">
+        <p><strong>Lower Layer</strong></p>
+        <p>PDUs arriving...</p>
+      </div>
+      <div class="arrow" style="transform: rotate(180deg);"></div>
+      <div class="box" id="rxBuffer">
+        <p><strong>Reception Buffer</strong></p>
+        <ul class="pdu-list" id="pduList">
+          <!-- Received PDUs will be added here -->
+        </ul>
+      </div>
+    </div>
+    <div class="controls">
+      <button onclick="simulateReception()">Simulate Reception of PDUs</button>
+      <button onclick="startReassembly()">Start Reassembly</button>
+    </div>
+    <p id="receiveStatus"></p>
+  </section>
+
+  <script>
+    // Global state simulation variables
+    let TX_Next = 100;
+    let RX_Next_Highest = 105; // starting value for demonstration
+    const UM_Window_Size = 5;
+    
+    // Simulate Transmit Operation
+    function startTransmit() {
+      document.getElementById("transmitStatus").innerText = "Transmitting UMD PDU...";
+      
+      // Set the current SN in the transmit block
+      document.getElementById("txSN").innerText = TX_Next;
+      
+      // Animate the UMD PDU moving to lower layer
+      const txPDU = document.getElementById("txPDU");
+      txPDU.classList.add("animate-slide-right");
+      
+      // After animation completes, simulate lower layer reception and update TX_Next
+      setTimeout(() => {
+        // Display the PDU in the lower layer box
+        document.getElementById("lowerLayerTx").innerHTML = `<p><strong>Lower Layer</strong></p><p>Received PDU SN = ${TX_Next}</p>`;
+        // For demo, assume the segment maps to the last byte of the RLC SDU.
+        TX_Next++; // Increment TX_Next
+        document.getElementById("txNextState").innerText = TX_Next;
+        document.getElementById("txSN").innerText = TX_Next;
+        document.getElementById("transmitStatus").innerText = "PDU transmitted. TX_Next incremented.";
+        // Reset animation so the button can be clicked again.
+        txPDU.classList.remove("animate-slide-right");
+        txPDU.style.transform = "translateX(0)";
+      }, 2200);
+    }
+
+    // Simulate the arrival of PDUs at the receiver (multiple PDUs with different SN values)
+    function simulateReception() {
+      document.getElementById("receiveStatus").innerText = "Simulating reception of PDUs...";
+      const pduList = document.getElementById("pduList");
+      pduList.innerHTML = ""; // Clear any previous PDUs
+
+      // Create an array of PDUs (some within and some outside the reassembly window)
+      // Reassembly window: (RX_Next_Highest - UM_Window_Size) <= SN < RX_Next_Highest
+      // With RX_Next_Highest = 105 and UM_Window_Size = 5, valid SNs: 100 <= SN < 105.
+      const receivedPDUs = [
+        { SN: 99, valid: false },
+        { SN: 100, valid: true },
+        { SN: 102, valid: true },
+        { SN: 104, valid: true },
+        { SN: 105, valid: false },
+        { SN: 103, valid: true }
+      ];
+
+      // Add PDUs to the reception buffer visually.
+      receivedPDUs.forEach((pdu, index) => {
+        const li = document.createElement("li");
+        li.className = "pdu-item";
+        li.id = `pdu-${index}`;
+        li.innerHTML = `PDU SN = ${pdu.SN} <br> <em>${pdu.valid ? "Valid" : "Discarded"}</em>`;
+        // Color-code: valid PDUs in green, invalid in red.
+        li.style.backgroundColor = pdu.valid ? "#ddffdd" : "#ffdddd";
+        pduList.appendChild(li);
+      });
+      document.getElementById("receiveStatus").innerText = "PDUs have been received. Check which fall within the reassembly window (100 ≤ SN < 105).";
+    }
+
+    // Simulate the reassembly process in the reception buffer
+    function startReassembly() {
+      document.getElementById("receiveStatus").innerText = "Starting reassembly process...";
+      const rxBuffer = document.getElementById("rxBuffer");
+      rxBuffer.classList.add("animate-reassemble");
+
+      // Simulate processing: only valid PDUs are used to reassemble RLC SDUs.
+      setTimeout(() => {
+        // For this demonstration, simply list out the valid PDUs.
+        const pduList = document.getElementById("pduList");
+        const pduItems = pduList.getElementsByClassName("pdu-item");
+        let validPDUs = [];
+        for (let item of pduItems) {
+          if (item.innerText.includes("Valid")) {
+            validPDUs.push(item.innerText);
+          }
+        }
+        // Simulate reassembly: if all segments for an SDU are present, deliver SDU; otherwise, discard.
+        let result = validPDUs.length >= 3 ? "Reassembled and delivered RLC SDU" : "Incomplete SDU segments discarded";
+        document.getElementById("receiveStatus").innerText = result;
+        
+        // Clean up animation
+        rxBuffer.classList.remove("animate-reassemble");
+      }, 3200);
+    }
+  </script>
+</body>
+</html>

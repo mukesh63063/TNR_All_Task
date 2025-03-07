@@ -1,0 +1,147 @@
+Codeshare logoFeb 14 11:09 PM
+ Upgrade
+ Share
+mukesh
+97
+ 1002  clear
+98
+ 1003  vi demo.py
+99
+ 1004  ls
+100
+ 1005  cd ns-3.42
+101
+ 1006  ls
+102
+ 1007  cd scratch 
+103
+ 1008  ls
+104
+ 1009  vi demo.py
+105
+ 1010  cd ..
+106
+ 1011  cd scratch
+107
+ 1012  ls
+108
+ 1013  cd ..
+109
+ 1014  ./ns3 run scratch/demo.py 
+110
+ 1015  cd scratch
+111
+ 1016  ls 
+112
+ 1017  cd ..
+113
+ 1018  ./ns3 run scratch/demo.py 
+114
+ 1019  cd scratch/
+115
+ 1020  pip install pycryptodome
+116
+ 1021  cd ..
+117
+ 1022  pip install pycryptodome
+118
+ 1023  cd scratch/
+119
+ 1024  vi integrity.py
+120
+ 1025  cd ..
+121
+ 1026  ./ns3 run scratch/integrity.py
+122
+ 1027  cd scratch/
+123
+ 1028  ls
+124
+ 1029  vi integrity.py
+125
+ 1030  cd ..
+126
+ 1031  ./ns3 run scratch/integrity.py
+127
+ 1032  python3 integrity.py
+128
+ 1033  ./ns3 run scratch/integrity.py
+129
+ 1034  cd scratch/
+130
+ 1035  vi integrity.py
+131
+ 1036  cd ..
+132
+ 1037  ./ns3 run scratch/integrity.py
+133
+ 1038  ls
+134
+ 1039  cd scratch/
+135
+ 1040  ls
+136
+ 1041  vi integrity.py
+137
+ 1042  cd ..
+138
+ 1043  ./ns3 run scratch/integrity.py
+139
+ 1044  cd scratch/
+140
+ 1045  ls
+141
+ 1046  vi integrity.py
+142
+ 1047  cd ..
+143
+ 1048  ./ns3 run scratch/integrity.py
+144
+ 1049  cd scratch/
+145
+ 1050  vi cipher.py
+146
+ 1051  cd ..
+147
+ 1052  ./ns3 run scratch/cipher.py
+148
+ 1053  cd scratch/
+149
+ 1054  vi rohc.py
+150
+ 1055  cd ..
+151
+ 1056  ./ns3 run scratch/rohc.py
+152
+ 1057  pip install python-rohc
+153
+ 1058  cd scratch/
+154
+ 1059  pip install python-rohc
+155
+ 1060  vi rohc1.py
+156
+ 1061  vi header_compression.py
+157
+ 1062  cd
+158
+ 1063  cd /Downloads/ns-allinone-3.42/ns-3.42/scratch$
+159
+ 1064  cd ./Downloads/ns-allinone-3.42/ns-3.42/scratch
+160
+ 1065  cd ..
+161
+ 1066  ./ns3 run scratch/header_compression.py
+162
+ 1067  ./ns3 run scratch/rohc1.py
+163
+ 1068  history
+164
+​
+
+
+
+
+
+px
+Hide Ads

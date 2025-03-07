@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Protocol Stack Layers -->
+  <rect x="100" y="40" width="200" height="40" fill="#A0D8EF" stroke="black"/>
+  <text x="200" y="65" text-anchor="middle" font-family="Arial">PDCP</text>
+  
+  <rect x="100" y="100" width="200" height="40" fill="#FFB347" stroke="black"/>
+  <text x="200" y="125" text-anchor="middle" font-family="Arial">RLC</text>
+  
+  <rect x="100" y="160" width="200" height="40" fill="#98FB98" stroke="black"/>
+  <text x="200" y="185" text-anchor="middle" font-family="Arial">MAC</text>
+  
+  <rect x="100" y="220" width="200" height="40" fill="#DDA0DD" stroke="black"/>
+  <text x="200" y="245" text-anchor="middle" font-family="Arial">PHY</text>
+
+  <!-- Connecting Lines -->
+  <line x1="200" y1="80" x2="200" y2="100" stroke="black" stroke-width="2"/>
+  <line x1="200" y1="140" x2="200" y2="160" stroke="black" stroke-width="2"/>
+  <line x1="200" y1="200" x2="200" y2="220" stroke="black" stroke-width="2"/>
+</svg>

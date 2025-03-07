@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .container {
+      width: 100%;
+      height: 300px;
+      background: #f5f5f5;
+      position: relative;
+      overflow: hidden;
+      font-family: Arial;
+    }
+    .node {
+      width: 120px;
+      height: 60px;
+      background: #4a90e2;
+      border-radius: 8px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .packet {
+      width: 40px;
+      height: 25px;
+      position: absolute;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      transition: all 1s linear;
+    }
+    .data-packet {
+      background: #82ca9d;
+    }
+    .ack-packet {
+      background: #ffd700;
+    }
+    .status {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: #333;
+    }
+    h3 {
+      text-align: center;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Stop-and-Wait ARQ</h3>
+  <div class="container" id="animContainer">
+    <div class="status" id="status">Starting transmission...</div>
+    <div class="node" style="left: 50px; top: 120px">Sender</div>
+    <div class="node" style="right: 50px; top: 120px">Receiver</div>
+  </div>
+
+  <script>
+    const container = document.getElementById('animContainer');
+    const status = document.getElementById('status');
+    
+    function createPacket(id, text, isAck = false) {
+      const packet = document.createElement('div');
+      packet.className = `packet ${isAck ? 'ack-packet' : 'data-packet'}`;
+      packet.id = id;
+      packet.textContent = isAck ? 'ACK' : text;
+      packet.style.left = isAck ? '480px' : '180px';
+      packet.style.top = '140px';
+      return packet;
+    }
+
+    async function animate() {
+      for(let i = 1; i <= 3; i++) {
+        // Send packet
+        status.textContent = `Sending packet ${i}...`;
+        const packet = createPacket(`pkt${i}`, `${i}`);
+        container.appendChild(packet);
+        await new Promise(r => setTimeout(r, 100));
+        packet.style.left = '480px';
+        await new Promise(r => setTimeout(r, 1000));
+        container.removeChild(packet);
+
+        // Wait for ACK
+        status.textContent = `Waiting for ACK ${i}...`;
+        const ack = createPacket(`ack${i}`, `${i}`, true);
+        container.appendChild(ack);
+        await new Promise(r => setTimeout(r, 100));
+        ack.style.left = '180px';
+        await new Promise(r => setTimeout(r, 1000));
+        container.removeChild(ack);
+      }
+
+      status.textContent = 'Transmission complete!';
+      await new Promise(r => setTimeout(r, 1000));
+      animate();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

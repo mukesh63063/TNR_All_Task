@@ -1,0 +1,23 @@
+[
+    {
+        "nUes": 10,
+        "successRate": 1.0,
+        "avgDelay": 5.0,
+        "collisionProb": 0.0,
+        "networkStatus": "Connected"
+    },
+    {
+        "nUes": 100,
+        "successRate": 0.64,
+        "avgDelay": 8.6,
+        "collisionProb": 0.36,
+        "networkStatus": "Connected"
+    },
+    {
+        "nUes": 500,
+        "successRate": 0.128,
+        "avgDelay": 13.72,
+        "collisionProb": 0.872,
+        "networkStatus": "Connected"
+    }
+]

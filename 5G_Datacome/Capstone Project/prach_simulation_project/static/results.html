@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PRACH Simulation Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            background: linear-gradient(135deg, #f0f0f0, #d9e4f5); /* Subtle gradient background */
+        }
+        .container {
+            background: linear-gradient(135deg, #ffffff, #f5f7fa); /* Gradient for container */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 123, 255, 0.1); /* Enhanced shadow with blue glow */
+            width: 900px; /* Increased width for a larger container */
+            max-width: 95%; /* Responsive max width */
+            margin: 20px auto; /* Center and add margin for spacing */
+            text-align: center;
+            border: 2px solid #007bff; /* Blue border for attractiveness */
+            position: relative; /* For footer positioning */
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 25px;
+            font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0, 123, 255, 0.3); /* Subtle text shadow */
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            font-size: 16px; /* Default font size for table */
+            overflow-x: auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 14px;
+            text-align: center;
+            color: #555;
+        }
+        th {
+            background: linear-gradient(135deg, #007bff, #0056b3); /* Gradient for table header */
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        }
+        img {
+            max-width: 90%;
+            height: auto;
+            margin: 25px 0;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+            object-fit: contain;
+        }
+        button, a {
+            background: linear-gradient(135deg, #007bff, #0056b3); /* Gradient for buttons/links */
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 8px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+        button:hover, a:hover {
+            background: linear-gradient(135deg, #0056b3, #003d7a);
+            transform: scale(1.05); /* Slight scale on hover for interactivity */
+        }
+        .error, #fetchStatus {
+            margin-top: 20px;
+            color: #333;
+            font-size: 16px;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            color: #666;
+            font-size: 16px;
+            font-style: italic;
+            text-align: center;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: #0056b3;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) { /* Tablets and smaller desktops */
+            .container {
+                width: 85%;
+                padding: 30px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 12px;
+            }
+            button, a {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+            img {
+                max-width: 85%;
+            }
+            .footer {
+                font-size: 14px;
+                bottom: 10px;
+            }
+        }
+
+        @media (max-width: 768px) { /* Mobile devices */
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 10px;
+            }
+            button, a {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            img {
+                max-width: 80%;
+                margin: 15px 0;
+            }
+            .footer {
+                font-size: 12px;
+                bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PRACH Simulation Results</h1>
+        <table>
+            <tr>
+                <th>UEs</th>
+                <th>Success Rate (%)</th>
+                <th>Avg Delay (ms)</th>
+                <th>Collision Prob (%)</th>
+                <th>Network Status</th>
+            </tr>
+            <!-- Results will be filled by JavaScript -->
+        </table>
+        <br>
+        <img src="/output/prach_graph.png" alt="Performance Graph" style="max-width: 90%; height: auto;" onerror="this.style.display='none'; console.log('Graph load error: Check server logs and ensure output/prach_graph.png exists.'); document.querySelector('body').innerHTML += '<p class=\"</p>
+        <br>
+        <button onclick="window.location.href='/'">Run Another Test</button>
+        <br>
+        <a href="/output/log.html" target="_blank">View Robot Framework Log</a>
+        <a href="/output/report.html" target="_blank">View Robot Framework Report</a>
+        <a href="/output/selenium_log.txt" target="_blank">View Selenium Log</a>
+        <p id="fetchStatus"></p>
+        <div class="footer">
+            Made by Team Latency Leaders (Gurshaan, Aniket, Satyam, Irfan, Chaya, Mukesh)
+        </div>
+    </div>
+    <script>
+        fetch('/output/prach_results.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const table = document.querySelector('table');
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${row.nUes}</td><td>${(row.successRate * 100).toFixed(2)}</td><td>${row.avgDelay.toFixed(2)}</td><td>${(row.collisionProb * 100).toFixed(2)}</td><td>${row.networkStatus}</td>`;
+                    table.appendChild(tr);
+                });
+                document.getElementById('fetchStatus').innerText = 'Data loaded successfully.';
+            })
+            .catch(error => {
+                console.error('Error fetching results:', error);
+                document.getElementById('fetchStatus').innerHTML = `<p class=\"error\">Error loading data: ${error.message}. Check server logs or ensure output/prach_results.json exists.</p>`;
+            });
+    </script>
+</body>
+</html>

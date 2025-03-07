@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRACH Success Rate Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #4cc9f0, #4361ee, #7209b7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h2 {
+            color: #4cc9f0;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .control-panel {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button.active {
+            background: linear-gradient(to right, #7209b7, #3a0ca3);
+            box-shadow: 0 0 10px #7209b7;
+        }
+
+        .simulation-area {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, #16213e, #1a1a2e);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .base-station {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 120px;
+            z-index: 10;
+        }
+
+        .tower {
+            position: absolute;
+            width: 20px;
+            height: 100px;
+            background: linear-gradient(to bottom, #e63946, #457b9d);
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+
+        .antenna {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            background: #a8dadc;
+            border-radius: 5px;
+        }
+
+        .signal-waves {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 2px solid rgba(76, 201, 240, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .ue {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: #f1faee;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            color: #1d3557;
+            font-weight: bold;
+            z-index: 5;
+            transition: transform 0.5s, background 0.5s;
+        }
+
+        .ue.success {
+            background: #06d6a0;
+            box-shadow: 0 0 10px #06d6a0;
+        }
+
+        .ue.failed {
+            background: #ef476f;
+            box-shadow: 0 0 10px #ef476f;
+        }
+
+        .ue-message {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #4cc9f0;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #4cc9f0;
+        }
+
+        .results {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .results-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .metric {
+            width: 30%;
+            text-align: center;
+            padding: 15px;
+            background: rgba(26, 26, 46, 0.5);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .success-rate .metric-value {
+            color: #06d6a0;
+        }
+
+        .access-delay .metric-value {
+            color: #4cc9f0;
+        }
+
+        .collision-prob .metric-value {
+            color: #ef476f;
+        }
+
+        @keyframes pulse {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+            }
+            100% {
+                width: 400px;
+                height: 400px;
+                opacity: 0;
+            }
+        }
+
+        .signal-waves:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .signal-waves:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #4cc9f0;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PRACH Success Rate Validation</h1>
+        <p>Testing random access performance under different network loads</p>
+    </header>
+
+    <div class="container">
+        <div class="control-panel">
+            <h2>Network Load Conditions</h2>
+            <div class="buttons">
+                <button id="lowLoadBtn" class="active">Low Load (10 UEs)</button>
+                <button id="mediumLoadBtn">Medium Load (100 UEs)</button>
+                <button id="highLoadBtn">High Load (500 UEs)</button>
+                <button id="startSimBtn">Start Simulation</button>
+            </div>
+        </div>
+
+        <div class="simulation-area">
+            <div class="base-station">
+                <div class="antenna"></div>
+                <div class="tower"></div>
+            </div>
+            <div class="signal-waves"></div>
+            <div class="signal-waves"></div>
+            <div class="signal-waves"></div>
+
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Running simulation...</p>
+            </div>
+        </div>
+
+        <div class="results">
+            <h2>Simulation Results</h2>
+            <div class="results-content">
+                <div class="metric success-rate">
+                    <h3>Success Rate</h3>
+                    <div class="metric-value" id="successRate">0%</div>
+                    <p>Percentage of successful UEs</p>
+                </div>
+                <div class="metric access-delay">
+                    <h3>Access Delay</h3>
+                    <div class="metric-value" id="accessDelay">0 ms</div>
+                    <p>Average delay per UE</p>
+                </div>
+                <div class="metric collision-prob">
+                    <h3>Collision Probability</h3>
+                    <div class="metric-value" id="collisionProb">0%</div>
+                    <p>UE preamble collisions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // References to DOM elements
+            const simulationArea = document.querySelector('.simulation-area');
+            const loadingScreen = document.querySelector('.loading');
+            const lowLoadBtn = document.getElementById('lowLoadBtn');
+            const mediumLoadBtn = document.getElementById('mediumLoadBtn');
+            const highLoadBtn = document.getElementById('highLoadBtn');
+            const startSimBtn = document.getElementById('startSimBtn');
+            const successRateEl = document.getElementById('successRate');
+            const accessDelayEl = document.getElementById('accessDelay');
+            const collisionProbEl = document.getElementById('collisionProb');
+
+            // Simulation variables
+            let selectedLoad = 'low';
+            let ueCount = 10;
+            let isSimulationRunning = false;
+            let ues = [];
+            let messages = [];
+
+            // Expected outcomes based on load
+            const expectedOutcomes = {
+                low: {
+                    successRate: 95,
+                    accessDelay: 15,
+                    collisionProb: 5
+                },
+                medium: {
+                    successRate: 80,
+                    accessDelay: 35,
+                    collisionProb: 20
+                },
+                high: {
+                    successRate: 60,
+                    accessDelay: 75,
+                    collisionProb: 40
+                }
+            };
+
+            // Set up load buttons
+            lowLoadBtn.addEventListener('click', () => setLoad('low', 10));
+            mediumLoadBtn.addEventListener('click', () => setLoad('medium', 100));
+            highLoadBtn.addEventListener('click', () => setLoad('high', 500));
+
+            function setLoad(load, count) {
+                // Update UI buttons
+                [lowLoadBtn, mediumLoadBtn, highLoadBtn].forEach(btn => btn.classList.remove('active'));
+                document.getElementById(`${load}LoadBtn`).classList.add('active');
+
+                // Update simulation variables
+                selectedLoad = load;
+                ueCount = count;
+            }
+
+            // Start simulation button
+            startSimBtn.addEventListener('click', function() {
+                if (isSimulationRunning) return;
+
+                startSimulation();
+            });
+
+            function startSimulation() {
+                // Clear previous simulation
+                clearSimulation();
+
+                // Show loading screen
+                loadingScreen.style.display = 'flex';
+                isSimulationRunning = true;
+
+                // Simulate loading time (NS-3 would take time to run)
+                setTimeout(() => {
+                    // Hide loading screen
+                    loadingScreen.style.display = 'none';
+
+                    // Create UEs
+                    createUEs();
+
+                    // Animate PRACH procedure
+                    animatePrachProcedure();
+                }, 1500);
+            }
+
+            function clearSimulation() {
+                // Remove all UEs and messages
+                ues.forEach(ue => ue.element.remove());
+                messages.forEach(msg => msg.element.remove());
+                ues = [];
+                messages = [];
+
+                // Reset results
+                successRateEl.textContent = '0%';
+                accessDelayEl.textContent = '0 ms';
+                collisionProbEl.textContent = '0%';
+            }
+
+            function createUEs() {
+                // For visualization, we limit the number of UEs shown
+                const displayCount = Math.min(ueCount, 30);
+
+                for (let i = 0; i < displayCount; i++) {
+                    // Calculate random position around the edge of the simulation area
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = 180;
+                    const x = 400 + radius * Math.cos(angle);
+                    const y = 200 + radius * Math.sin(angle);
+
+                    // Create UE element
+                    const ueElement = document.createElement('div');
+                    ueElement.className = 'ue';
+                    ueElement.textContent = i + 1;
+                    ueElement.style.left = `${x}px`;
+                    ueElement.style.top = `${y}px`;
+                    simulationArea.appendChild(ueElement);
+
+                    // Add to UEs array
+                    ues.push({
+                        id: i + 1,
+                        element: ueElement,
+                        position: { x, y },
+                        isSuccess: Math.random() * 100 < expectedOutcomes[selectedLoad].successRate
+                    });
+                }
+            }
+
+            function animatePrachProcedure() {
+                // For each UE, animate the PRACH attempt
+                ues.forEach((ue, index) => {
+                    // Stagger the animations
+                    setTimeout(() => {
+                        // Create and animate PRACH message from UE to base station
+                        sendPrachMessage(ue);
+                    }, index * 200);
+                });
+
+                // After all UEs have attempted, show results
+                setTimeout(showResults, ues.length * 200 + 2000);
+            }
+
+            function sendPrachMessage(ue) {
+                // Create message element
+                const messageElement = document.createElement('div');
+                messageElement.className = 'ue-message';
+                messageElement.style.left = `${ue.position.x}px`;
+                messageElement.style.top = `${ue.position.y}px`;
+                simulationArea.appendChild(messageElement);
+
+                // Add to messages array
+                const message = {
+                    element: messageElement,
+                    from: ue
+                };
+                messages.push(message);
+
+                // Animate message to base station
+                const baseStationX = 400;
+                const baseStationY = 200;
+
+                // Animate with keyframes for smoother motion
+                const anim = messageElement.animate([
+                    { left: `${ue.position.x}px`, top: `${ue.position.y}px` },
+                    { left: `${baseStationX}px`, top: `${baseStationY}px` }
+                ], {
+                    duration: 1000,
+                    easing: 'ease-in-out',
+                    fill: 'forwards'
+                });
+
+                // After message arrives, determine success/failure
+                anim.onfinish = () => {
+                    // Animate UE success/failure
+                    setTimeout(() => {
+                        if (ue.isSuccess) {
+                            ue.element.classList.add('success');
+                        } else {
+                            ue.element.classList.add('failed');
+                        }
+                    }, 500);
+
+                    // Remove message element
+                    setTimeout(() => {
+                        messageElement.remove();
+                    }, 200);
+                };
+            }
+
+            function showResults() {
+                isSimulationRunning = false;
+
+                // Count successful UEs
+                const successfulUEs = ues.filter(ue => ue.isSuccess).length;
+                const successRate = (successfulUEs / ues.length) * 100;
+
+                // Update results UI with the expected outcomes for the selected load
+                successRateEl.textContent = `${expectedOutcomes[selectedLoad].successRate}%`;
+                accessDelayEl.textContent = `${expectedOutcomes[selectedLoad].accessDelay} ms`;
+                collisionProbEl.textContent = `${expectedOutcomes[selectedLoad].collisionProb}%`;
+
+                // Animate the numbers counting up
+                animateCountUp(successRateEl, 0, expectedOutcomes[selectedLoad].successRate, '%');
+                animateCountUp(accessDelayEl, 0, expectedOutcomes[selectedLoad].accessDelay, ' ms');
+                animateCountUp(collisionProbEl, 0, expectedOutcomes[selectedLoad].collisionProb, '%');
+            }
+
+            function animateCountUp(element, start, end, suffix) {
+                let current = start;
+                const increment = (end - start) / 20;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= end) {
+                        current = end;
+                        clearInterval(timer);
+                    }
+                    element.textContent = `${Math.round(current)}${suffix}`;
+                }, 50);
+            }
+
+            // Initialize with low load selected
+            setLoad('low', 10);
+        });
+    </script>
+</body>
+</html>

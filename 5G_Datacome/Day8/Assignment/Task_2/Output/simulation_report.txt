@@ -1,0 +1,23 @@
+=== 5G NR ROHC Simulation Report ===
+Generated on: 2025-02-21 14:02:26
+Simulation Events:
+- System configuration: Configured ROHC_Module with {'compression_level': 'high', 'profile': 'UDP/IP'}
+- 5G NR connection: gNB connected to UE: UE_1 with signal strength 92.41 dBm
+- UE connection: UE UE_1 connected to gNB: gNB_1 with battery 97.73%
+- Channel status: Channel condition: Normal (Loss rate: 2.98%)
+- Random access: 5 successes, 0 collisions, avg delay 8.04ms
+- Generated traffic: Traffic_High_Load_Volume_4717.62KB/s
+- Generated packet: Packet_Data_Size_581.05B
+- Compressed: Compressed_Packet_Data_Size_581.05B_Size_4.80
+- Decompressed: Decompressed_Compressed_Packet_Data_Size_581.05B_Size_4.80
+- Test result: Test executed for Scenario_5G_ROHC_Test_Complexity_2.55 with Packet_Data_Size_581.05B (Delay: 0.43s)
+- Visualization: Visualizations saved to 'output' (Bar: output/metrics_bar.png, Line: output/latency_line.png, Scatter: output/throughput_scatter.png)
+
+Performance Metrics:
+Latency: 6.51ms (at 2025-02-21 14:02:25)
+Throughput: 218.67Mbps (at 2025-02-21 14:02:25)
+
+Random Access Metrics:
+Successful Accesses: 5
+Collisions: 0
+Average Access Delay: 8.04ms

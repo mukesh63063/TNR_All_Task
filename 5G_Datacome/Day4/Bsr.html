@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buffer Status Report (BSR) Animation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+        }
+        .explanation {
+            margin: 20px 0;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+        .animation {
+            position: relative;
+            height: 200px;
+            margin-top: 30px;
+        }
+        .mailbox, .postoffice {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #333;
+            background-color: #fff;
+            position: absolute;
+            bottom: 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .mailbox {
+            left: 50px;
+        }
+        .postoffice {
+            right: 50px;
+        }
+        .buffer {
+            width: 50px;
+            height: 50px;
+            background-color: #4caf50;
+            border-radius: 5px;
+            display: none;
+        }
+        .sending-buffer {
+            animation: sendBuffer 3s forwards;
+        }
+        .receiving-buffer {
+            animation: receiveBuffer 3s forwards;
+        }
+        @keyframes sendBuffer {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(50%);
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        @keyframes receiveBuffer {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .bsr-type-select {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Buffer Status Report (BSR) Explained</h1>
+    <p class="explanation">In communication networks, the User Equipment (UE) informs the network about how much data it has ready for transmission. This is called the Buffer Status Report (BSR). Think of it like a mailbox sending a report to the post office.</p>
+
+    <div class="animation">
+        <div class="mailbox">
+            <div class="buffer"></div>
+        </div>
+        <div class="postoffice">
+            <p>Network</p>
+        </div>
+    </div>
+
+    <p class="explanation">There are different types of BSRs that provide varying levels of detail about the amount of data:</p>
+    <ul>
+        <li><strong>Short BSR</strong>: Provides minimal information.</li>
+        <li><strong>Long BSR</strong>: Provides detailed information.</li>
+        <li><strong>Truncated BSR</strong>: Offers partial information.</li>
+    </ul>
+
+    <div class="bsr-type-select">
+        <label for="bsr-type">Select BSR Type:</label>
+        <select id="bsr-type">
+            <option value="short">Short BSR</option>
+            <option value="long">Long BSR</option>
+            <option value="truncated">Truncated BSR</option>
+        </select>
+    </div>
+
+    <button onclick="sendBSR()">Send BSR</button>
+</div>
+
+<script>
+    function sendBSR() {
+        const buffer = document.querySelector('.buffer');
+        const bsrType = document.getElementById('bsr-type').value;
+        
+        buffer.style.display = 'block';
+        buffer.classList.remove('sending-buffer', 'receiving-buffer');
+        
+        if (bsrType === 'short') {
+            buffer.style.backgroundColor = '#ff9800'; // Short BSR color
+        } else if (bsrType === 'long') {
+            buffer.style.backgroundColor = '#4caf50'; // Long BSR color
+        } else if (bsrType === 'truncated') {
+            buffer.style.backgroundColor = '#2196f3'; // Truncated BSR color
+        }
+        
+        buffer.classList.add('sending-buffer');
+        
+        setTimeout(() => {
+            receiveBSR();
+        }, 3000); // Delay for receiving the BSR after sending
+    }
+    
+    function receiveBSR() {
+        const buffer = document.querySelector('.buffer');
+        buffer.classList.remove('sending-buffer');
+        buffer.classList.add('receiving-buffer');
+        
+        // Simulate network receiving the BSR
+        setTimeout(() => {
+            buffer.style.opacity = 1;
+            alert('BSR received by Network!');
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>

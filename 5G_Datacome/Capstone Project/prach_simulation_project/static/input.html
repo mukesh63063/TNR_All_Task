@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Run PRACH Simulation</title>
+    <style>
+        /* Base styles for all screens - Debug: Ensuring visibility and responsiveness */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh; /* Ensure full viewport height */
+            background: linear-gradient(135deg, #f0f0f0, #d9e4f5); /* Debug: Visible gradient background */
+            overflow: auto; /* Debug: Allow scrolling if content overflows */
+            /* Debug: Body should be visible and centered */
+            visibility: visible;
+        }
+        .container {
+            background: linear-gradient(135deg, #ffffff, #f5f7fa);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 123, 255, 0.1);
+            width: 90%; /* Default width for responsiveness */
+            max-width: 700px; /* Maximum width for larger screens */
+            margin: 20px auto; /* Center horizontally with spacing */
+            text-align: center;
+            border: 2px solid #007bff;
+            position: relative; /* For footer positioning */
+            /* Debug: Ensure container is visible, responsive, and sized correctly */
+            display: block !important; /* Force display to override any hidden rules */
+            visibility: visible !important; /* Force visibility */
+            min-height: 600px; /* Minimum height to ensure all content fits */
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 25px;
+            font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0, 123, 255, 0.3);
+            /* Debug: Title should be visible at the top */
+            display: block !important;
+            visibility: visible !important;
+        }
+        label {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 15px;
+            display: block !important;
+            font-weight: bold;
+            /* Debug: Label should be visible above input */
+            visibility: visible !important;
+        }
+        input[type="text"] {
+            width: 85%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s;
+            /* Debug: Input should be centered and styled */
+            display: block !important;
+            visibility: visible !important;
+        }
+        input[type="text"]:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 8px; /* Adjusted margin for multiple buttons */
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            /* Debug: Button should be visible and styled */
+            display: inline-block !important;
+            visibility: visible !important;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #0056b3, #003d7a);
+            transform: scale(1.05);
+        }
+        #status {
+            margin-top: 20px;
+            color: #333;
+            font-size: 16px;
+            /* Debug: Status should appear below button */
+            display: block !important;
+            visibility: visible !important;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .steps {
+            margin-top: 25px;
+            text-align: left;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #007bff;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1);
+            /* Debug: Steps should be visible below form */
+            display: block !important;
+            visibility: visible !important;
+        }
+        .steps h2 {
+            color: #007bff;
+            font-size: 20px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 123, 255, 0.2);
+        }
+        .steps ol {
+            list-style-type: decimal;
+            padding-left: 25px;
+            color: #444;
+            line-height: 1.8;
+        }
+        .steps li {
+            margin-bottom: 12px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+            text-align: center;
+            /* Debug: Footer should be visible at bottom */
+            display: block !important;
+            visibility: visible !important;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: #0056b3;
+        }
+
+        /* Responsive design - Debug: Ensuring responsiveness for all devices */
+        @media (max-width: 1024px) { /* Large tablets and small laptops */
+            .container {
+                width: 85%;
+                padding: 30px;
+                /* Debug: Scales for tablets/laptops */
+            }
+            h1 {
+                font-size: 26px;
+            }
+            label {
+                font-size: 16px;
+            }
+            input[type="text"] {
+                width: 80%;
+                padding: 10px;
+                font-size: 14px;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 16px;
+                margin: 6px; /* Adjusted margin for smaller screens */
+            }
+            .steps {
+                padding: 15px;
+                margin-top: 20px;
+            }
+            .steps h2 {
+                font-size: 18px;
+            }
+            .steps ol {
+                padding-left: 20px;
+                line-height: 1.6;
+            }
+            .footer {
+                font-size: 12px;
+                bottom: 8px;
+            }
+        }
+
+        @media (max-width: 768px) { /* Tablets */
+            .container {
+                width: 90%;
+                padding: 25px;
+                /* Debug: Scales for tablets */
+            }
+            h1 {
+                font-size: 22px;
+            }
+            label {
+                font-size: 14px;
+            }
+            input[type="text"] {
+                width: 75%;
+                padding: 8px;
+                font-size: 12px;
+            }
+            button {
+                padding: 10px 18px;
+                font-size: 14px;
+                margin: 5px; /* Adjusted margin for smaller screens */
+            }
+            .steps {
+                padding: 12px;
+                margin-top: 15px;
+            }
+            .steps h2 {
+                font-size: 16px;
+            }
+            .steps ol {
+                padding-left: 15px;
+                line-height: 1.5;
+            }
+            .steps li {
+                margin-bottom: 8px;
+            }
+            .footer {
+                font-size: 10px;
+                bottom: 5px;
+            }
+        }
+
+        @media (max-width: 480px) { /* Mobile devices */
+            .container {
+                width: 90%;
+                padding: 15px;
+                /* Debug: Scales for mobile */
+            }
+            h1 {
+                font-size: 18px;
+            }
+            label {
+                font-size: 12px;
+            }
+            input[type="text"] {
+                width: 70%;
+                padding: 6px;
+                font-size: 10px;
+            }
+            button {
+                padding: 8px 14px;
+                font-size: 12px;
+                margin: 3px; /* Adjusted margin for smaller screens */
+            }
+            .steps {
+                padding: 10px;
+                margin-top: 10px;
+            }
+            .steps h2 {
+                font-size: 14px;
+            }
+            .steps ol {
+                padding-left: 10px;
+                line-height: 1.4;
+            }
+            .steps li {
+                margin-bottom: 6px;
+            }
+            .footer {
+                font-size: 8px;
+                bottom: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Run PRACH Simulation</h1>
+        <label>Enter Number of UEs (e.g., 10, 100, 500):</label><br>
+        <input type="text" id="ueInput" placeholder="e.g., 10 100 500"><br>
+        <button onclick="runTest()">Run Test</button>
+        <!-- Simple button/link for visualization redirection (no JavaScript) -->
+        <!-- Note: Replace '/PRACH_Success_Rate.html' with the actual path of your visualization file in static/ if needed -->
+        <a href="/PRACH_Success_Rate.html" target="_blank" style="text-decoration: none;">
+            <button>Visualization</button>
+        </a>
+        <p id="status"></p>
+        <div class="steps">
+            <h2>How to Use This Simulation</h2>
+            <ol>
+                <li>Open this page in your web browser by visiting <code>http://localhost:5000</code>.</li>
+                <li>In the text box above, enter the number of User Equipments (UEs) you want to simulate, separated by spaces (e.g., "10 100 500" for 10, 100, and 500 UEs).</li>
+                <li>Click the "Run Test" button to start the simulation. This will process the data and generate results.</li>
+                <li>After a few seconds, you’ll be automatically redirected to the "PRACH Simulation Results" page, where you’ll see a table with performance metrics (Success Rate, Avg Delay, Collision Probability, and Network Status) and a graph showing the performance over the number of UEs.</li>
+                <li>Use the "Run Another Test" button on the results page to return here and try different numbers, or click the links to view test reports generated by Robot Framework and Selenium for detailed insights.</li>
+                <li>Click the 'Visualization' button to explore the PRACH Success Rate Visualization in a new tab (ensure PRACH_Success_Rate.html exists in static/).</li> <!-- Updated step for visualization -->
+                <li>If you encounter any issues (e.g., errors or missing data), check the server logs or contact your administrator for assistance.</li>
+            </ol>
+        </div>
+        <div class="footer">
+            Made by Team Latency Leaders (Gurshaan, Aniket, Satyam, Irfan, Chaya, Mukesh)
+        </div>
+    </script>
+    <script>
+        // Function to run the PRACH simulation test
+        function runTest() {
+            const ues = document.getElementById('ueInput').value.split(' ').map(Number);
+            fetch('/run_test', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ loads: ues })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = 'Test completed! Redirecting...';
+                setTimeout(() => window.location.href = '/results.html', 2000);
+            })
+            .catch(error => {
+                document.getElementById('status').innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long DRX Command MAC CE Visualization (3GPP 138.321)</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #10b981;
+            --tertiary-color: #ef4444;
+            --background-color: #f0f9ff;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --border-color: #cbd5e1;
+            --highlight-color: #fbbf24;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--dark-color);
+            transition: all 0.5s;
+        }
+        
+        h1, h2, h3 {
+            color: var(--dark-color);
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.3em;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .mac-ce-container {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+        }
+        
+        .mac-ce-container:hover {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .mac-ce-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            color: var(--primary-color);
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .mac-header-container, .mac-ce-illustration {
+            display: flex;
+            flex-direction: row;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .mac-header-field, .mac-ce-field {
+            text-align: center;
+            padding: 15px 5px;
+            border-right: 1px solid var(--border-color);
+            position: relative;
+            font-weight: bold;
+            transition: all 0.4s;
+        }
+        
+        .mac-header-field:last-child, .mac-ce-field:last-child {
+            border-right: none;
+        }
+        
+        .field-label {
+            font-size: 0.9em;
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+        
+        .field-value {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.3em;
+            transition: all 0.3s;
+        }
+        
+        .lcid { flex: 2; }
+        .r { flex: 1; }
+        .f { flex: 1; }
+        .l { flex: 1; }
+        
+        .highlighted {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .highlighted .field-label {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .inactive {
+            background-color: #94a3b8;
+            color: var(--light-color);
+        }
+        
+        .explanation {
+            margin-top: 40px;
+            background-color: var(--light-color);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .explanation:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        button {
+            background: linear-gradient(145deg, var(--primary-color), #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+        }
+        
+        button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+            transition: all 0.7s;
+            opacity: 0;
+        }
+        
+        button:hover::after {
+            opacity: 1;
+            transform: rotate(45deg) translate(90%, -80%);
+        }
+        
+        .format-description {
+            margin-bottom: 30px;
+            line-height: 1.7;
+            font-size: 1.1em;
+            color: #475569;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .note {
+            font-style: italic;
+            color: #64748b;
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid var(--primary-color);
+            background-color: #f1f5f9;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s;
+        }
+        
+        .note:hover {
+            background-color: #e2e8f0;
+            transform: translateX(5px);
+        }
+        
+        .specification-reference {
+            text-align: right;
+            font-size: 0.9em;
+            color: #64748b;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-style: italic;
+        }
+        
+        @keyframes highlight {
+            0% { transform: scale(1); }
+            10% { transform: scale(1.03); background-color: var(--highlight-color); color: #1e293b; }
+            20% { transform: scale(1); }
+            30% { transform: scale(1.02); background-color: var(--highlight-color); color: #1e293b; }
+            100% { transform: scale(1); }
+        }
+        
+        .highlight {
+            animation: highlight 1.5s;
+        }
+        
+        .animation-container {
+            position: relative;
+            height: 250px;
+            margin: 40px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #f1f5f9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.5s;
+        }
+        
+        .animation-container:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .ue {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            width: 70px;
+            height: 140px;
+            background: linear-gradient(145deg, var(--primary-color), #1d4ed8);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(29, 78, 216, 0.3);
+            z-index: 10;
+        }
+        
+        .gnb {
+            position: absolute;
+            bottom: 10px;
+            right: 50px;
+            width: 90px;
+            height: 180px;
+            background: linear-gradient(145deg, var(--secondary-color), #059669);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+            z-index: 10;
+        }
+        
+        .transmission {
+            position: absolute;
+            height: 6px;
+            background: linear-gradient(90deg, var(--tertiary-color), #f97316);
+            top: 120px;
+            border-radius: 3px;
+            z-index: 5;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+        
+        .transmission-right {
+            left: 120px;
+            width: 0;
+        }
+        
+        .transmission-left {
+            right: 140px;
+            width: 0;
+        }
+        
+        @keyframes transmissionGlow {
+            0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+        }
+        
+        .transmission-active {
+            animation: transmissionGlow 1s infinite;
+        }
+        
+        .ue-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--dark-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            z-index: 20;
+        }
+        
+        .drx-cycle-container {
+            position: absolute;
+            left: 50px;
+            top: 30px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+        }
+        
+        .drx-cycle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+            border-top: 4px solid transparent;
+            animation-name: spin;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulsate {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .drx-pulse {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgba(37, 99, 235, 0.1);
+            animation: pulsate 2s infinite;
+            display: none;
+        }
+        
+        .sleep-mode {
+            opacity: 0.6;
+            transform: translateY(5px);
+            box-shadow: 0 2px 5px rgba(29, 78, 216, 0.2);
+        }
+        
+        .message-log {
+            max-height: 180px;
+            overflow-y: auto;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #1e293b;
+            border: 1px solid #0f172a;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            color: #e2e8f0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            scrollbar-width: thin;
+            scrollbar-color: #475569 #1e293b;
+        }
+        
+        .message-log::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .message-log::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        .message-log::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border-radius: 4px;
+        }
+        
+        .log-entry {
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .log-time {
+            color: #94a3b8;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .log-message {
+            flex: 1;
+        }
+        
+        .log-entry.info .log-time::before {
+            content: "ℹ️ ";
+        }
+        
+        .log-entry.success .log-time::before {
+            content: "✅ ";
+        }
+        
+        .log-entry.warning .log-time::before {
+            content: "⚠️ ";
+        }
+        
+        .log-entry.error .log-time::before {
+            content: "❌ ";
+        }
+        
+        .sequence-diagram {
+            margin: 40px 0;
+            padding: 30px;
+            background-color: var(--light-color);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .sequence-diagram:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+        
+        .sequence-timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .sequence-step {
+            display: flex;
+            width: 100%;
+            margin: 20px 0;
+            align-items: center;
+        }
+        
+        .timeline-ue, .timeline-gnb {
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f1f5f9;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .timeline-ue:hover, .timeline-gnb:hover {
+            background-color: #e2e8f0;
+            transform: scale(1.05);
+        }
+        
+        .timeline-arrow {
+            flex: 3;
+            height: 3px;
+            background-color: var(--primary-color);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .timeline-arrow:hover {
+            background-color: #1d4ed8;
+            height: 4px;
+        }
+        
+        .arrow-right::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -5px;
+            border-width: 6px 0 6px 12px;
+            border-style: solid;
+            border-color: transparent transparent transparent var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        .arrow-left::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -5px;
+            border-width: 6px 12px 6px 0;
+            border-style: solid;
+            border-color: transparent var(--primary-color) transparent transparent;
+            transition: all 0.3s;
+        }
+        
+        .arrow-label {
+            position: absolute;
+            top: -30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.95em;
+            color: #475569;
+            background-color: rgba(241, 245, 249, 0.8);
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .arrow-label:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-2px);
+        }
+        
+        .timeline-time {
+            position: absolute;
+            bottom: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85em;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+        
+        .animated-transmission {
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), #60a5fa);
+            width: 0%;
+            margin: 30px 0;
+            transition: width 2s ease-in-out;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+        }
+        
+        @keyframes notification {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #16a34a;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(22, 163, 74, 0.4);
+            z-index: 1000;
+            animation: notification 3s forwards;
+            display: none;
+        }
+        
+        .notification.error {
+            background-color: #dc2626;
+            box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        }
+        
+        .notification.warning {
+            background-color: #ea580c;
+            box-shadow: 0 5px 15px rgba(234, 88, 12, 0.4);
+        }
+        
+        .notification.info {
+            background-color: #0284c7;
+            box-shadow: 0 5px 15px rgba(2, 132, 199, 0.4);
+        }
+        
+        /* Battery indicator for UE */
+        .battery-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 15px;
+            border: 2px solid white;
+            border-radius: 3px;
+            padding: 1px;
+        }
+        
+        .battery-level {
+            height: 100%;
+            background-color: #22c55e;
+            width: 100%;
+            border-radius: 1px;
+            transition: width 0.5s, background-color 0.5s;
+        }
+        
+        .battery-cap {
+            position: absolute;
+            right: -4px;
+            top: 4px;
+            width: 3px;
+            height: 7px;
+            background-color: white;
+            border-radius: 0 2px 2px 0;
+        }
+        
+        /* Signal strength indicators */
+        .signal-strength {
+            position: absolute;
+            top: 35px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            transform: rotate(180deg);
+        }
+        
+        .signal-bar {
+            background-color: white;
+            margin-bottom: 1px;
+            transition: height 0.3s, opacity 0.3s;
+        }
+        
+        .bar1 { width: 4px; height: 3px; opacity: 1; }
+        .bar2 { width: 8px; height: 3px; opacity: 1; }
+        .bar3 { width: 12px; height: 3px; opacity: 1; }
+        .bar4 { width: 16px; height: 3px; opacity: 1; }
+        
+        /* DRX Animation Enhancement */
+        @keyframes wakeUpAnimation {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .wake-up {
+            animation: wakeUpAnimation 0.5s;
+        }
+        
+        /* Wave Animation around gNB */
+        .wave-container {
+            position: absolute;
+            bottom: 10px;
+            right: 50px;
+            width: 90px;
+            height: 180px;
+            z-index: 5;
+        }
+        
+        .wave {
+            position: absolute;
+            border: 2px solid rgba(5, 150, 105, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes wave-animation {
+            0% { width: 90px; height: 180px; opacity: 0.8; }
+            100% { width: 250px; height: 350px; opacity: 0; }
+        }
+        
+        .wave1 {
+            animation: wave-animation 4s infinite;
+        }
+        
+        .wave2 {
+            animation: wave-animation 4s infinite 1s;
+        }
+        
+        .wave3 {
+            animation: wave-animation 4s infinite 2s;
+        }
+        
+        /* Action buttons with icons */
+        .icon-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .button-icon {
+            width: 18px;
+            height: 18px;
+            fill: white;
+            transition: transform 0.3s;
+        }
+        
+        .icon-button:hover .button-icon {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div id="notification" class="notification">Command sent successfully!</div>
+    
+    <h1>Long DRX Command MAC CE Visualization</h1>
+    <p class="format-description">
+        The Long DRX Command MAC CE is identified by a MAC PDU subheader with LCID=52 in 3GPP TS 38.321.
+        Its purpose is to command the UE to transition from continuous reception or short DRX cycle to the long DRX cycle,
+        which helps conserve battery power at the expense of potentially increased latency.
+    </p>
+    
+    <div class="controls">
+        <button id="sendDrxCommand" class="icon-button">
+            <svg class="button-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+            Send Long DRX Command
+        </button>
+        <button id="resetSimulation" class="icon-button">
+            <svg class="button-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+            Reset Simulation
+        </button>
+        <button id="toggleHeaderHighlight" class="icon-button">
+            <svg class="button-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+            </svg>
+            Show MAC Subheader
+        </button>
+    </div>
+    
+    <div class="animated-transmission" id="transmission"></div>
+    
+    <div class="mac-ce-container">
+        <div class="mac-ce-title">MAC PDU Structure with Long DRX Command MAC CE</div>
+        
+        <h3>MAC Subheader</h3>
+        <div class="mac-header-container" id="mac-header">
+            <div class="mac-header-field lcid" id="lcid-field">
+                <div class="field-label">LCID</div>
+                <div class="field-value">52</div>
+            </div>
+            <div class="mac-header-field r" id="r-field">
+                <div class="field-label">R</div>
+                <div class="field-value">0</div>
+            </div>
+            <div class="mac-header-field f" id="f-field">
+                <div class="field-label">F</div>
+                <div class="field-value">0</div>
+            </div>
+            <div class="mac-header-field l" id="l-field">
+                <div class="field-label">L</div>
+                <div class="field-value">0</div>
+            </div>
+        </div>
+        <p class="note">Note: LCID=52 (or 0x34) identifies this as a Long DRX Command MAC CE in the downlink.</p>
+        
+        <h3>Long DRX Command MAC CE</h3>
+        <div class="mac-ce-illustration" id="mac-ce">
+            <div class="mac-ce-field" style="flex: 1;">
+                <div class="field-label">MAC CE (empty)</div>
+                <div class="field-value">-</div>
+            </div>
+        </div>
+        <p class="note">Note: The Long DRX Command MAC CE consists of only the MAC subheader without additional fields.</p>
+    </div>
+    
+    <div class="animation-container" id="animation-container">
+        <div class="ue" id="ue">
+            UE
+            <div class="battery-container">
+                <div class="battery-level" id="battery-level"></div>
+                <div class="battery-cap"></div>
+            </div>
+            <div class="signal-strength">
+                <div class="signal-bar bar1"></div>
+                <div class="signal-bar bar2"></div>
+                <div class="signal-bar bar3"></div>
+                <div class="signal-bar bar4"></div>
+            </div>
+        </div>
+        <div class="gnb">
+            gNB
+            <div class="wave-container">
+                <div class="wave wave1"></div>
+                <div class="wave wave2"></div>
+                <div class="wave wave3"></div>
+            </div>
+        </div>
+        <div class="transmission transmission-left" id="transmission-left"></div>
+        <div class="transmission transmission-right" id="transmission-right"></div>
+        <div class="ue-status" id="ue-status">Status: Active</div>
+        <div class="drx-cycle-container">
+            <div class="drx-pulse" id="drx-pulse"></div>
+            <div class="drx-cycle" id="drx-cycle"></div>
+        </div>
+    </div>
+    
+    <div class="message-log" id="message-log">
+        <div class="log-entry info">
+            <span class="log-time">00:00</span>
+            <span class="log-message">Simulation ready. Click "Send Long DRX Command" to start.</span>
+        </div
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long DRX Command MAC CE Visualization (3GPP 138.321)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .mac-ce {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .bit {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            margin: 5px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 5px;
+            background-color: lightgray;
+            transition: background 0.5s ease;
+        }
+        .activated {
+            background-color: green;
+            color: white;
+        }
+        .deactivated {
+            background-color: red;
+            color: white;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            background: #1e293b;
+            color: white;
+            border-radius: 5px;
+            font-family: monospace;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Long DRX Command MAC CE</h2>
+        <p>Click the button to send a Long DRX Command.</p>
+        <button class="button" onclick="sendDrxCommand()">Send Long DRX Command</button>
+        <div class="mac-ce" id="macCE">
+            <div class="bit" id="bit0">0</div>
+            <div class="bit" id="bit1">0</div>
+            <div class="bit" id="bit2">0</div>
+            <div class="bit" id="bit3">0</div>
+            <div class="bit" id="bit4">0</div>
+            <div class="bit" id="bit5">0</div>
+            <div class="bit" id="bit6">0</div>
+            <div class="bit" id="bit7">0</div>
+        </div>
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        function sendDrxCommand() {
+            let bits = document.querySelectorAll('.bit');
+            let log = document.getElementById('log');
+            let currentTime = new Date().toLocaleTimeString();
+            
+            bits.forEach((bit, index) => {
+                if (bit.classList.contains('activated')) {
+                    bit.classList.remove('activated');
+                    bit.classList.add('deactivated');
+                    bit.innerText = '0';
+                } else {
+                    bit.classList.remove('deactivated');
+                    bit.classList.add('activated');
+                    bit.innerText = '1';
+                }
+                log.innerHTML += `<p>[${currentTime}] Bit ${index} set to ${bit.innerText}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
