@@ -1,0 +1,21 @@
+306  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+  307  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+  308  minikube start
+  309  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+  310  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+  311  clear
+  312  sudo gpasswd -a $USER docker
+  313  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+  314  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+  315  docker images
+  316  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+  317  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+  318  minikube start
+  319  docker ps
+  320  history
+  321  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+  322  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+  323  minikube start
+  324  exit
+  325  history
+ 

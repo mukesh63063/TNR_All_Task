@@ -1,0 +1,80 @@
+    All_commands
+    -------------
+    
+    1  history
+    2  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+    3  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+    4  minikube start
+    5  sudo gpasswd -a $USER docker
+    6  minikube start
+    7  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+    8  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+    9  minikube start
+   10  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+   11  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+   12  minikube start
+   13    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+   14  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+   15  kubectl version --client
+   16  clear
+   17  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+   18  kubectl version --client
+   19  kubectl get namespace
+   20  kubectl get pods
+   21  kubectl config set-context --current --namespace=kube-system
+   22  kubectl get pods
+   23  kubectl get namespace
+   24  clear
+   25  kubectl create namespace devops-lab
+   26  kubectl get pods
+   27  kubectl config current-context
+   28  kubectl config set-context --current --namespace=devops-lab
+   29  kubectl get pods
+   30  kubectl run my-nginx-pod --image=nginx:latest --dry-run=client
+   31  kubectl run my-nginx-pod --image=nginx:latest
+   32  kubectl get pods
+   33  docker ps
+   34  clear
+   35  kubectl run my-nginx-pod --image=nginx:latest --dry-run=client -o yml > pod.yaml
+   36  kubectl run my-nginx-pod --image=nginx:latest --dry-run=client -o yml > pod.yml
+   37  kubectl run my-nginx-pod --image=nginx:latest --dry-run=client -o yaml > pod.yml
+   38  kubectl run my-nginx-pod --image=nginx:latest --dry-run=client -o yaml > pod.yaml
+   39  vim pod.yaml
+   40  kubectl get pod
+   41  rm pod.yml
+   42  clear
+   43  vim pod.yaml
+   44  mkdir k8s
+   45  cd k8s
+   46  vim pod-demo.yaml
+   47  kubectl get pod
+   48  kubectl apply -f pod-demo.yaml
+   49  vim pod-demo.yaml
+   50  kubectl apply -f pod-demo.yaml
+   51  vim pod-demo.yaml
+   52  kubectl apply -f pod-demo.yaml
+   53  vim pod-demo.yaml
+   54  kubectl apply -f pod-demo.yaml
+   55  vim pod-demo.yaml
+   56  kubectl get pod
+   57  vim pod-demo.yaml
+   58  history
+   59  clear
+   60  kubectl get deployment
+   61  kubectl create deployment my-nginx-deployment --image=nging:latest --dry-run=client
+   62  kubectl create deployment my-nginx-deployment --image=nging:latest
+   63  kubectl get deployment
+   64  kubectl get pod
+   65  kubectl create deployment my-nginx-deployment --image=nging:latest
+   66  kubectl delte deployment my-nginx-deployment
+   67  kubectl delete deployment my-nginx-deployment
+   68  kubectl pod
+   69  kubectl get pod
+   70  clear
+   71  kubectl create deployment my-nginx-deployment --image=nging:latest
+   72  kubectl get deployment
+   73  kubectl get pod
+   74  kubectl delete deployment my-nginx-deployment
+   75  kubectl get dployment
+   76  kubectl get deployment
+   77  history

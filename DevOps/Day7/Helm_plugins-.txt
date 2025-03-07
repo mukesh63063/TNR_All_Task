@@ -1,0 +1,23 @@
+ 1  sudo dnf -y install dnf-plugins-core
+    2  sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    3  sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    4  sudo systemctl enable --now docker
+    5  cd
+    6  exit
+    7  cd
+    8  docker imades
+    9  docker images
+   10  sudo -i
+   11  docker tag nginx mukeshprajapati/denial1
+   12  exit
+   13  doker imageees
+   14  doker images
+   15  docker images
+   16  docker tag nginx mukeshprajapati/denial1
+   17  docker push mukeshprajapati/denial1
+   18  docker push mukeshprajapati/denial_demo mukeshprajapati/denial1
+   19  docker tag mukeshprajapati/denial_demo mukeshprajapati/denial1
+   20  docker push mukeshprajapati/denial_demo mukeshprajapati/denial1
+   21  docker pull deepak
+   22  exit
+   23  sudo systemctl start jenkins

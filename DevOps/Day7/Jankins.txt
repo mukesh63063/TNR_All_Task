@@ -1,0 +1,52 @@
+All commands About Jankins   
+
+1  exit
+    2  ls
+    3  cat /etc/passwd
+    4  yum install git
+    5  clear
+    6  yum install git
+    7  git --version
+    8  sudo apt update
+    9  git --version
+   10  makdir jankins
+   11  mkdir jankins
+   12  cd jankins
+   13  sudo usrname -a -G docker jankins
+   14  sudo usrename -a -G docker jankins
+   15  sudo usermod -aG docker jankin
+   16  docker --version
+   17  sudo apt update
+   18  sudo apt install -y docker.io
+   19  sudo systemctl start docker
+   20  sudo systemctl enable docker
+   21  docker --version
+   22  sudo usermod -aG docker jankin
+   23  cut -d: -f1 /etc/passwd
+   24  sudo usermod -aG docker jenkins
+   25  sudo adduser jankin
+   26  sudo usermod -aG docker jankin
+   27  sudo adduser jankin
+   28  sudo usermod -aG docker jankin
+   29  groups jenkins
+   30  git --version
+   31  python3 --version
+   32  docker --version
+   33  sudo systemctl start docker
+   34  sudo systemctl enable docker
+   35  sudo usermod -aG docker jenkins
+   36  newgrp docker
+   37  systemctl start docker
+   38  cd /var/do
+   39  apt install docker -y
+   40  docker version
+   41  cd /var/
+   42  ls
+   43  cd run
+   44  ls
+   45  ls -al docker.sock 
+   46  systemctl  status docker.service 
+   47  cd
+   48  cd /var/run
+   49  chmod 777 docker.sock 
+   50  ls -al docker.sock 

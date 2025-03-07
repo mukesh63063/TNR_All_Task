@@ -1,0 +1,109 @@
+196  docker inspect hello-world
+  197  clear
+  198  clear
+  199  docker container ls
+  200  docker inspect my-prabhat:v2.0
+  201  docker logs
+  202  docker logs my-prabhat:v2.0
+  203  docker container
+  204  docker container ls
+  205  docker container logs my-prabhat:v2.0
+  206  docker container logs 558c3030b86a
+  207  docker network ls
+  208  clear
+  209  docker network create devops-bridge-network
+  210  docker network ls
+  211  sudo docker run --name my-new-network --network=devops-bridge-network -p 8081:80 -d my-prabhat:v2.0
+  212  docker container ls
+  213  docker inspect container 774c426a598d
+  214  clear
+  215  docker volume ls
+  216  sudo docker volume create devops-vol1
+  217  docker volume ls
+  218  docker container ls
+  219  sudo docker run --name my--nginx-container-volume --network=devops-bridge-network -v devops-vol1:/usr/share/nginx/html -p 8082:80 -d my-prabhat:v2.0
+  220  docker volume inspect devops-vol1
+  221  cat /var/lib/docker/voulumes/devops-vol1/_data/index.html
+  222  cat /var/lib/docker/voulumes/devops-vol1/_data
+  223  cat /var/lib/docker/voulumes/devops-vol1/_data/index.html
+  224  cd  /var/lib/docker/voulumes/devops-vol1/_data/index.html
+  225  clear
+  226  cd devops
+  227  ls
+  228  cd ..
+  229  cd  /var/lib/docker/voulumes/devops-vol1/_data/html/index.html
+  230  docker volume inspect devops-vol1
+  231  vim /var/lib/docker/volumes/devops-vol1/_data/index.html
+  232  cat /var/lib/docker/volumes/devops-vol1/_data/index.html
+  233  clear
+  234  cd docker-compose
+  235  mkdir docker-compose
+  236  cd docker-compose
+  237  vi docker-compose.yml
+  238  mkdir nginx
+  239  cd nginx
+  240  cd ..
+  241  rmdir nginx
+  242  cd ..
+  243  cd nginx
+  244  mkdir nginx
+  245  cd nginx
+  246  vi Dockerfile
+  247  cd docker-compose
+  248  dir
+  249  cd..
+  250  cd ..
+  251  cd docker-file
+  252  cd docker-compose
+  253  vi docker-compose.yml
+  254  clear
+  255  cd ..
+  256  cd nginx
+  257  ls
+  258  mkdir html
+  259  cd html
+  260  vi index.html
+  261  cd ..
+  262  cd devops
+  263  clear
+  264  mkdir docker-compose
+  265  cd docker-compose
+  266  vi docker-compose
+  267  rm docker-compose
+  268  vi docker-compose.yml
+  269  mkdir nginx
+  270  cd nginx/
+  271  vi Dockerfile
+  272  mkdir html
+  273  cd html
+  274  clear
+  275  vi index.html
+  276  cd ..
+  277  mkdir mysql
+  278  cd mysql/
+  279  vi Dockerfile
+  280  cd ..
+  281  docker compose up --build -d
+  282  vi docker-compose.yml
+  283  docker compose up --build -d
+  284  cd ..
+  285  clear
+  286  sudo docker images
+  287  sudo docker image FROM mysql:latest
+  288  ENV MYSQL_ROOT_PASSWORD=password@123
+  289  ENV MYSQL_DATABASE=devopsdemo
+  290  ENV MYSQL_USER=devops
+  291  ENV MYSQL_PASSWORD=password@123
+  292  EXPOSE 3306
+  293  clear
+  294  docker image log
+  295  docker images log
+  296  sudo docker images
+  297  clear
+  298  docker containers ls -a
+  299  docker container ls -a
+  300  sudo docker logs 9cbee4fb0cea
+  301  clear
+  302  docker container ps -a
+  303  history
+  304  cd nginx

@@ -1,0 +1,152 @@
+  All Commands
+------------------------
+
+  204   kubectl get deployment
+  205  kubectl create deployment my-nginx-deployment --image=ngnix:latest --dry-run=client
+  206  kubectl create deployment my-nginx-deployment --image=ngnix:latest
+  207  kubectl get deployment
+  208  kubectl get pod
+  209  kubectl create deployment my-nginx-deployment --image=ngnix:latest
+  210  kubectl create deployment my-nginx-deployment
+  211  kubectl get pod
+  212  kubectl delete pod my-nginx-deployment-7bc5b95fd9-qjcv6
+  213  kubectl get pod
+  214  kubectl delete pod my-nginx-deployment-7bc5b95fd9-qjcv6
+  215  kubectl delete my-nginx-deployment-7bc5b95fd9-qjcv6
+  216  kubectl get pod
+  217  kubectl delete pod my-nginx-deployment-7bc5b95fd9-qjcv6
+  218  kubectl get pod
+  219  kubectl delete pod my-nginx-deployment
+  220  kubectl delete pod my-nginx1-deployment
+  221  kubectl delete deployment my-nginx1-deployment
+  222  kubectl get pod
+  223  kubectl get deployment
+  224  kubectl describe pod my-nginx-pod
+  225  kubectl exec my-nginx-pod -it bash
+  226  kubectl exec -it  my-nginx1-pod -- /bin/bash
+  227  kubectl get pod
+  228  kubectl exec -it  my-nginx-pod -- /bin/bash
+  229  exit
+  230  vim deployment.yaml
+  231  kubectl get pod
+  232  kubectl apply -f deployment.yaml
+  233  kubectl get pod
+  234  kubectl delete pod my-nginx-deployment-7bc5b95fd9-x6fc2
+  235  kubectl get pod
+  236  cat my-nginx-deployment
+  237  cat my-nginx-deployment-7bc5b95fd9-v8jct
+  238  cat my-nginx-deployment-7bc5b95fd9-x6fc2
+  239  ls
+  240  kubectll get deployment
+  241  kubectl get deployment
+  242  kubectl rollout status deployment/my-nginx-deployment
+  243  kubectl describe deployment my-nginx-deployment
+  244  kubectl rollout status deployment/my-nginx-deployment
+  245  ls
+  246  cat deployment.yaml
+  247  kubectl rollout status my-nginx-deployment
+  248  kubectl get po
+  249  kubectl delete my-nginx-pod
+  250  kubectl delete pod my-nginx-pod
+  251  kubectl get po
+  252  kubectl deleteeee po my-nginx-deployment-7bc5b95fd9-v8jct
+  253  kubectl delete po my-nginx-deployment-7bc5b95fd9-v8jct
+  254  kubectl get pod
+  255  kubectl delete po my-nginx-deployment-7bc5b95fd9-r4k4s
+  256  lsssssssssssssssssssss
+  257  ls
+  258  kubectl apply -f deployment.yaml
+  259  kubectl get deploy
+  260  kubectl delete deploy my-nginx-deployment
+  261  kubectl apply -f deployment.yaml
+  262  kubectl get pod
+  263  kubectl rollout history deployment/my-nginx-deployment
+  264  vim deployment.yaml
+  265  cat deployment.yaml
+  266  kubectl rollout history deployment/my-nginx-deployment
+  267  kubectl rollout deployment/my-nginx-deployment
+  268  kubectl rollout --help
+  269  kubectl get pod
+  270  kubectl get replicaset
+  271  vim deployment.yaml
+  272  vim replicaset.yaml
+  273  kubectl apply -f replicaset.yaml --force
+  274  kubectl delete my-nginx-deployment-7dcdc64485-4j8hn
+  275  ls
+  276  kubectl delete deploy my-nginx-deployment
+  277  kubectl apply -f replicaset.yaml
+  278  ls
+  279  cat replicaset.yaml
+  280  ls
+  281  vim replicaset.yaml
+  282  cat replicaset.yaml
+  283  ls
+  284*
+  285  vim replicaset.yaml
+  286  ls
+  287  vim hpa.yaml
+  288  kubectl apply -f hpa.yaml
+  289  kubectl get hpa
+  290  minikube addons enable metrics-server
+  291  kubectl get hpa
+  292  vim hpa.yaml
+  293  kubectl exec -it nginx-deployment-86b6bb5dc7-vqmdc --/bin/bash
+  294  ls
+  295  cat hpa.yaml
+  296  vi hpa.yaml
+  297  kubectl apply -f hpa.yaml
+  298  kubectl get hpa
+  299  vi hpa.yaml
+  300  kubectl apply -f hpa.yaml
+  301  kubectl get hpa
+  302  kubectl get hpa -o wide
+  303*
+  304  kubectl get hpa
+  305  vi hpa.yaml
+  306  kubectl get hpa
+  307*
+  308  vi hpa.yaml
+  309  kubectl get hpa
+  310  vim nginx-deployment.yaml
+  311  vi hpa.yaml
+  312  kubectl apply -f hpa.yaml
+  313  kubectl get hpa nginx-hpa
+  314  kubectl delete hpa nginx-hpa
+  315  kubectl apply -f hpa.yaml
+  316*
+  317  kubectl get deployment metrics-server -n kube-sytem
+  318  kubectl get namespaces
+  319  kubectl config det-context --current --namespace=devops-lab
+  320  kubectl get hpa
+  321  kubectl get secret
+  322  kubectl get configmap
+  323  vim secret.yaml
+  324  kubectl apply -f secret.yaml
+  325  kubectl get secret
+  326  vim secret-demo.yaml
+  327  kubectl apply -f secret-demo.yaml
+  328  kubectk get pod
+  329  vim secret-demo.yaml
+  330  kubectl apply secret-demo.yaml
+  331  kubectk get pod
+  332  kubectl apply -f secret-demo.yaml
+  333  kubectl get pod
+  334  vim configmap.yaml
+  335  kubectl apply -f configmap.yaml
+  336  kubectl get pod
+  337  vim secret-demo.yaml
+  338  vim configmap-pod.yaml
+  339  kubectl apply -f configmap-pod.yaml
+  340  kubectl get pod
+  341  vim configmap-pod.yaml
+  342  kubectl get pod
+  343  kubectl get service
+  344  vim service.yaml
+  345  kubectl apply -f service.yaml
+  346  kubectl get service
+  347  kubectl apply -f service.yaml
+  348  kubectl get pod
+  349  kubectl describe pod nginx-service-demo
+  350  kubectl get service
+  351  kubectl describe service nginx-service-demo
+  352  history
